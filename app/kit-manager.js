@@ -1,22 +1,20 @@
 // Kit Manager class to handle saving, loading, and managing kits
-function buildImageUrl(imagePath) {
-        if (!imagePath) return "https://kb.veretech.systems/images/placeholder.png";
-        
-        let cleanPath = imagePath.replace(/^\.\//, '');
-        
-        return `https://kb.veretech.systems/${cleanPath}.png`;
-    }
-
 class KitManager {
-    constructor() {
+    constructor(generateCommands, updateWearLockStatus, findItemImagePath, buildImageUrl, output) {
         this.kits = JSON.parse(localStorage.getItem('savedKits') || '{}');
+        this.generateCommands = generateCommands;
+        this.updateWearLockStatus = updateWearLockStatus;
+        this.findItemImagePath = findItemImagePath;
+        this.buildImageUrl = buildImageUrl;
+        this.output = output;
+        
         this.setupEventListeners();
         
         // Add event listener to update commands when kit name changes
         const kitNameInput = document.getElementById('kit-name');
         kitNameInput.addEventListener('input', () => {
             setTimeout(() => {
-                commandsOutput.value = generateCommands();
+                this.output.value = this.generateCommands();
             }, 0);
         });
 
@@ -24,7 +22,7 @@ class KitManager {
         document.querySelectorAll('.slot').forEach(slot => {
             slot.addEventListener('change', () => {
                 setTimeout(() => {
-                    output.value = generateCommands();
+                    this.output.value = this.generateCommands();
                 }, 0);
             });
         });
@@ -75,7 +73,7 @@ class KitManager {
 
         return kitData;
     }
-
+    
     loadKit(kitName) {
         const kitData = this.kits[kitName];
         if (!kitData) {
@@ -109,7 +107,7 @@ class KitManager {
                 const slotImg = document.createElement('img');
                 slotImg.classList.add('slotted-item');
                 slotImg.alt = this.getItemName(item.itemId);
-                slotImg.src = buildImageUrl(this.findItemImagePath(data.id));
+                slotImg.src = this.buildImageUrl(this.findItemImagePath(item.itemId));
                 slotImg.onerror = () => {
                     slotImg.src = "https://kb.veretech.systems/images/placeholder.png";
                 };
@@ -128,7 +126,7 @@ class KitManager {
                     qtyInput.disabled = true;
                 } else {
                     qtyInput.addEventListener('change', () => {
-                        output.value = generateCommands();
+                        this.output.value = this.generateCommands();
                     });
                 }
                 slotItem.appendChild(qtyInput);
@@ -153,7 +151,7 @@ class KitManager {
                     delete slot.dataset.itemId;
                     delete slot.dataset.itemName;
                     updateWearLockStatus();
-                    output.value = generateCommands();
+                    this.output.value = this.generateCommands();
                 });
 
                 // Add the slot item to the slot
@@ -186,7 +184,7 @@ class KitManager {
                     const newSlotImg = document.createElement('img');
                     newSlotImg.classList.add('slotted-item');
                     newSlotImg.alt = data.itemName;
-                    slotImg.src = buildImageUrl(this.findItemImagePath(data.id));
+                    slotImg.src = this.buildImageUrl(this.findItemImagePath(data.itemId));
                     slotImg.onerror = () => {
                         slotImg.src = "https://kb.veretech.systems/images/placeholder.png";
                     };
@@ -205,7 +203,7 @@ class KitManager {
                         newQtyInput.disabled = true;
                     } else {
                         newQtyInput.addEventListener('change', () => {
-                            output.value = generateCommands();
+                            this.output.value = this.generateCommands();
                         });
                     }
                     newSlotItem.appendChild(newQtyInput);
@@ -229,8 +227,8 @@ class KitManager {
                         slot.innerHTML = '';
                         delete slot.dataset.itemId;
                         delete slot.dataset.itemName;
-                        updateWearLockStatus();
-                        output.value = generateCommands();
+                        this.updateWearLockStatus();
+                        this.output.value = this.generateCommands();
                     });
 
                     // Update slot data
@@ -242,7 +240,7 @@ class KitManager {
                     slot.appendChild(newRemoveBtn);
 
                     // Update commands
-                    output.value = generateCommands();
+                    this.output.value = this.generateCommands();
                 }
             });
         });
@@ -260,14 +258,14 @@ class KitManager {
                 slot.innerHTML = '';
                 delete slot.dataset.itemId;
                 delete slot.dataset.itemName;
-                updateWearLockStatus();
-                output.value = generateCommands();
+                this.updateWearLockStatus();
+                this.output.value = this.generateCommands();
             }
         });
 
         // Update commands after all items are loaded and event listeners are set up
         setTimeout(() => {
-            output.value = generateCommands();
+            this.output.value = this.generateCommands();
         }, 0);
     }
 
