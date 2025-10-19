@@ -1,120 +1,117 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Timber Town Kit Builder</title>
-        <link rel="stylesheet" href="style.css" />
-    </head>
-    <body>
-        <!-- Top Banner -->
-        <header id="top-banner">
-            <div class="top-container">
-                <img src="https://cdn.imgchest.com/files/7b57438a2012.webp" alt="Logo" class="banner-logo" />
-                <h1>TIMBER TOWN KIT BUILDER</h1>
-            </div>
-        </header>
-        
-        <div class="wrapper">
-            <!-- Sidebar -->
-            <aside class="sidebar">
-                <div class="search-controls">
-                    <div clas="controls-row">
-                        <input type="text" id="kit-name" placeholder="Enter kit name..." />
-                        <select id="category"></select>
-                    </div>
-                    <div class="controls-row">
-                        <input type="text" id="search" placeholder="Search items..." />
-                    </div>
-                </div>
-                <div class="sidebar-grid" id="item-list">
-                </div>
-            </aside>
-            
-            <!-- Builder -->
-            <main class="builder">
-                <div class="section-container">
-                    <div class="kit-section">
-                        <h2>WEAR</h2>
-                        <div id="wear" class="slot-grid">
-                            <div class="slot" data-slot-type="wear" data-slot-index="0"></div>
-                            <div class="slot" data-slot-type="wear" data-slot-index="1"></div>
-                            <div class="slot" data-slot-type="wear" data-slot-index="2"></div>
-                            <div class="slot" data-slot-type="wear" data-slot-index="3"></div>
-                            <div class="slot" data-slot-type="wear" data-slot-index="4"></div>
-                            <div class="slot" data-slot-type="wear" data-slot-index="5"></div>
-                            <div class="slot" data-slot-type="wear" data-slot-index="6"></div>
-                        </div>
-                    </div>
-                    
-                    <div class="kit-section">
-                        <h2>MAIN INVENTORY</h2>
-                        <div id="main" class="slot-large">
-                            <div class="slot" data-slot-type="main" data-slot-index="0"></div>
-                            <div class="slot" data-slot-type="main" data-slot-index="1"></div>
-                            <div class="slot" data-slot-type="main" data-slot-index="2"></div>
-                            <div class="slot" data-slot-type="main" data-slot-index="3"></div>
-                            <div class="slot" data-slot-type="main" data-slot-index="4"></div>
-                            <div class="slot" data-slot-type="main" data-slot-index="5"></div>
-                            <div class="slot" data-slot-type="main" data-slot-index="6"></div>
-                            <div class="slot" data-slot-type="main" data-slot-index="7"></div>
-                            <div class="slot" data-slot-type="main" data-slot-index="8"></div>
-                            <div class="slot" data-slot-type="main" data-slot-index="9"></div>
-                            <div class="slot" data-slot-type="main" data-slot-index="10"></div>
-                            <div class="slot" data-slot-type="main" data-slot-index="11"></div>
-                            <div class="slot" data-slot-type="main" data-slot-index="12"></div>
-                            <div class="slot" data-slot-type="main" data-slot-index="13"></div>
-                            <div class="slot" data-slot-type="main" data-slot-index="14"></div>
-                            <div class="slot" data-slot-type="main" data-slot-index="15"></div>
-                            <div class="slot" data-slot-type="main" data-slot-index="16"></div>
-                            <div class="slot" data-slot-type="main" data-slot-index="17"></div>
-                            <div class="slot" data-slot-type="main" data-slot-index="18"></div>
-                            <div class="slot" data-slot-type="main" data-slot-index="19"></div>
-                            <div class="slot" data-slot-type="main" data-slot-index="20"></div>
-                            <div class="slot" data-slot-type="main" data-slot-index="21"></div>
-                            <div class="slot" data-slot-type="main" data-slot-index="22"></div>
-                            <div class="slot" data-slot-type="main" data-slot-index="23"></div>
-                        </div>
-                    </div>
-                    
-                    <div class="kit-section">
-                        <h2>BELT</h2>
-                        <div id="belt" class="slot-grid belt">
-                            <div class="slot" data-slot-type="belt" data-slot-index="0"></div>
-                            <div class="slot" data-slot-type="belt" data-slot-index="1"></div>
-                            <div class="slot" data-slot-type="belt" data-slot-index="2"></div>
-                            <div class="slot" data-slot-type="belt" data-slot-index="3"></div>
-                            <div class="slot" data-slot-type="belt" data-slot-index="4"></div>
-                            <div class="slot" data-slot-type="belt" data-slot-index="5"></div>
-                            <div class="slot" data-slot-type="belt" data-slot-index="6"></div>
-                            <div class="slot" data-slot-type="belt" data-slot-index="7"></div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="output-section">
-                    <h2>KIT OUTPUT</h2>
-                    <textarea id="kit-output" placeholder="Bnana" readonly></textarea>
-                    <div class="button-row">
-                        <button id="copy-commands">COPY COMMANDS</button>
-                        <button id="copy-install-code">COPY INSTALL CODE (BASE64)</button>
-                        <button id="clear-all">CLEAR ALL</button>
-                    </div>
-                    <div class="button-row">
-                        <button id="save-kit">SAVE KIT</button>
-                        <button id="load-kit">LOAD KIT</button>
-                        <button id="manage-kits">MANAGE KITS</button>
-                        <button id="import-kit">IMPORT KIT</button>
-                    </div>
-                </div>
-            </main>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Timber Town Kit Builder</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <!-- Top Banner -->
+    <header>
+      <div class="header-container">
+        <img src="https://cdn.imgchest.com/files/7b57438a2012.webp" alt="Logo" class="logo" />
+        <h1>TIMBER TOWN KIT BUILDER</h1>
+      </div>
+    </header>
+    <div class="app-wrapper">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <div class="search-controls">
+          <div class="controls-row">
+            <input type="text" id="kit-name" placeholder="Enter kit name..." />
+          </div>
+          <div class="controls-row">
+            <select id="categorySelect">
+              <option value="ALL"> All Categories </option>
+            </select>
+          </div>
+          <div class="controls-row">
+            <input type="text" id="search" placeholder="Search items..." />
+          </div>
         </div>
-        
-        <script src="data.js"></script>
-        <script src="script.js"></script>
-        
-        <div class="toast-container"></div>
-    </body>
+        <div class="sidebar-grid" id="item-list"></div>
+      </aside>
+      <!-- Builder -->
+      <main class="builder">
+        <div class="section-container">
+          <div class="kit-section">
+            <h2>WEAR</h2>
+            <div id="wear" class="slot-grid">
+              <div class="slot" data-slot-type="wear" data-slot-index="0"></div>
+              <div class="slot" data-slot-type="wear" data-slot-index="1"></div>
+              <div class="slot" data-slot-type="wear" data-slot-index="2"></div>
+              <div class="slot" data-slot-type="wear" data-slot-index="3"></div>
+              <div class="slot" data-slot-type="wear" data-slot-index="4"></div>
+              <div class="slot" data-slot-type="wear" data-slot-index="5"></div>
+              <div class="slot" data-slot-type="wear" data-slot-index="6"></div>
+            </div>
+          </div>
+          <div class="kit-section">
+            <h2>MAIN INVENTORY</h2>
+            <div id="main" class="slot-large">
+              <div class="slot" data-slot-type="main" data-slot-index="0"></div>
+              <div class="slot" data-slot-type="main" data-slot-index="1"></div>
+              <div class="slot" data-slot-type="main" data-slot-index="2"></div>
+              <div class="slot" data-slot-type="main" data-slot-index="3"></div>
+              <div class="slot" data-slot-type="main" data-slot-index="4"></div>
+              <div class="slot" data-slot-type="main" data-slot-index="5"></div>
+              <div class="slot" data-slot-type="main" data-slot-index="6"></div>
+              <div class="slot" data-slot-type="main" data-slot-index="7"></div>
+              <div class="slot" data-slot-type="main" data-slot-index="8"></div>
+              <div class="slot" data-slot-type="main" data-slot-index="9"></div>
+              <div class="slot" data-slot-type="main" data-slot-index="10"></div>
+              <div class="slot" data-slot-type="main" data-slot-index="11"></div>
+              <div class="slot" data-slot-type="main" data-slot-index="12"></div>
+              <div class="slot" data-slot-type="main" data-slot-index="13"></div>
+              <div class="slot" data-slot-type="main" data-slot-index="14"></div>
+              <div class="slot" data-slot-type="main" data-slot-index="15"></div>
+              <div class="slot" data-slot-type="main" data-slot-index="16"></div>
+              <div class="slot" data-slot-type="main" data-slot-index="17"></div>
+              <div class="slot" data-slot-type="main" data-slot-index="18"></div>
+              <div class="slot" data-slot-type="main" data-slot-index="19"></div>
+              <div class="slot" data-slot-type="main" data-slot-index="20"></div>
+              <div class="slot" data-slot-type="main" data-slot-index="21"></div>
+              <div class="slot" data-slot-type="main" data-slot-index="22"></div>
+              <div class="slot" data-slot-type="main" data-slot-index="23"></div>
+            </div>
+          </div>
+          <div class="kit-section">
+            <h2>BELT</h2>
+            <div id="belt" class="slot-grid belt">
+              <div class="slot" data-slot-type="belt" data-slot-index="0"></div>
+              <div class="slot" data-slot-type="belt" data-slot-index="1"></div>
+              <div class="slot" data-slot-type="belt" data-slot-index="2"></div>
+              <div class="slot" data-slot-type="belt" data-slot-index="3"></div>
+              <div class="slot" data-slot-type="belt" data-slot-index="4"></div>
+              <div class="slot" data-slot-type="belt" data-slot-index="5"></div>
+              <div class="slot" data-slot-type="belt" data-slot-index="6"></div>
+              <div class="slot" data-slot-type="belt" data-slot-index="7"></div>
+            </div>
+          </div>
+        </div>
+        <div class="output-container">
+          <div class="output-section">
+            <h2>KIT OUTPUT</h2>
+            <textarea id="kit-output" placeholder="Bnana" readonly></textarea>
+            <div class="button-row">
+              <button id="copy-commands">COPY COMMANDS</button>
+              <button id="copy-install-code">COPY INSTALL CODE (BASE64)</button>
+              <button id="clear-all">CLEAR ALL</button>
+            </div>
+            <div class="button-row">
+              <button id="save-kit">SAVE KIT</button>
+              <button id="load-kit">LOAD KIT</button>
+              <button id="manage-kits">MANAGE KITS</button>
+              <button id="import-kit">IMPORT KIT</button>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+    <script src="https://raw.githubusercontent.com/Mocha1530/KitBuilder/refs/heads/main/app/kit-manager.js"></script>
+    <script src="script.js"></script>
+    <div class="toast-container"></div>
+  </body>
 </html>
-
-
