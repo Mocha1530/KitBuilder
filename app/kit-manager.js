@@ -1,4 +1,12 @@
 // Kit Manager class to handle saving, loading, and managing kits
+function buildImageUrl(imagePath) {
+        if (!imagePath) return "https://kb.veretech.systems/images/placeholder.png";
+        
+        let cleanPath = imagePath.replace(/^\.\//, '');
+        
+        return `https://kb.veretech.systems/${cleanPath}.png`;
+    }
+
 class KitManager {
     constructor() {
         this.kits = JSON.parse(localStorage.getItem('savedKits') || '{}');
@@ -26,7 +34,7 @@ class KitManager {
         document.getElementById('save-kit').addEventListener('click', () => this.saveCurrentKit());
         document.getElementById('load-kit').addEventListener('click', () => this.showLoadDialog());
         document.getElementById('manage-kits').addEventListener('click', () => this.showManageDialog());
-        document.getElementById('import-Kit').addEventListener('click', () => this.showImportDialog());
+        document.getElementById('import-kit').addEventListener('click', () => this.showImportDialog());
     }
 
     saveCurrentKit() {
@@ -66,14 +74,6 @@ class KitManager {
         });
 
         return kitData;
-    }
-
-    function buildImageUrl(imagePath) {
-        if (!imagePath) return "https://kb.veretech.systems/images/placeholder.png";
-        
-        let cleanPath = imagePath.replace(/^\.\//, '');
-        
-        return `https://kb.veretech.systems/${cleanPath}.png`;
     }
 
     loadKit(kitName) {
