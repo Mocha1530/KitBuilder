@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Kit Editor — Plain</title>
+  <style>
+    :root{
+      --bg:#0b0f14; --panel:#0f161a; --muted:#98a0ad; --accent:#ff7a18; --card:#0d1417; --slot:#12171b; --border:rgba(255,255,255,0.04);
+      --glass:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, 'Helvetica Neue', Arial;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;background:var(--bg);color:#dbe4ef}
+    .app{display:flex;gap:20px;padding:18px}
+    .main{flex:1;display:flex;flex-direction:column;gap:16px}
+    .top{display:flex;gap:16px;align-items:center}
+    .tabs{display:flex;gap:12px}
+    .tabs button{background:transparent;border:0;color:var(--muted);padding:6px 10px;border-radius:6px}
+    .tabs button.active{background:rgba(255,255,255,0.03);color:#fff}
+
+    .panel{background:var(--panel);border:1px solid var(--border);padding:14px;border-radius:10px}
+    .row{display:flex;gap:12px}
+    .field{flex:1}
+    label{display:block;font-size:12px;color:var(--muted);margin-bottom:6px}
+    input,select,textarea{width:100%;padding:10px;border-radius:8px;background:#071018;border:1px solid rgba(255,255,255,0.03);color:#cbd6e8}
+    .slots{display:flex;gap:10px;flex-wrap:wrap}
+    .slot{width:64px;height:64px;border-radius:8px;background:var(--slot);border:1px dashed rgba(255,255,255,0.03);display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:28px}
+    .slot.small{width:48px;height:48px}
+    .big-slot{width:100%;min-height:120px;border-radius:8px;padding:12px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));border:1px solid rgba(255,255,255,0.03)}
+
+    .right{width:420px}
+    .items-search{display:flex;gap:8px;align-items:center;margin-bottom:8px}
+    .items-list{background:var(--card);padding:12px;border-radius:8px;height:420px;overflow:auto;border:1px solid var(--border)}
+    .item{display:flex;gap:10px;align-items:center;padding:8px;border-radius:6px;cursor:pointer}
+    .item:hover{background:rgba(255,255,255,0.02)}
+    .item .icon{width:36px;height:36px;border-radius:6px;background:linear-gradient(135deg,#2d3640,#1a2228);display:flex;align-items:center;justify-content:center;color:var(--muted)}
+    .tags{display:flex;gap:6px;margin-bottom:8px}
+    .btn{background:var(--accent);border:0;padding:8px 12px;border-radius:8px;color:#0b0f14;font-weight:600;cursor:pointer}
+    .mutebtn{background:transparent;border:1px solid rgba(255,255,255,0.03);color:var(--muted);padding:8px;border-radius:8px}
+    .commands textarea{width:100%;height:110px;background:#071017;border:1px solid rgba(255,255,255,0.02);color:#9fb4d8;padding:12px;border-radius:8px}
+
+    /* responsive */
+    @media(max-width:900px){.right{display:none}}
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div class="main">
+      <div class="top">
+        <div class="tabs"><button class="active">Build Kits</button><button>My Kits</button></div>
+        <div style="flex:1"></div>
+        <div style="display:flex;gap:8px;align-items:center"><button class="mutebtn">Clear All</button><button class="btn">Update Kit in Server</button></div>
+      </div>
+
+      <div class="panel row">
+        <div class="field">
+          <label>Kit Name</label>
+          <input id="kitname" value="asd12z" />
+        </div>
+        <div style="width:220px">
+          <label>Authorization Level</label>
+          <select id="auth"><option>None</option><option>Admin</option></select>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px"><strong style="background:#2a2f33;padding:4px 8px;border-radius:6px">WEAR</strong><span style="color:var(--muted)">Player Equipment</span></div>
+        <div style="display:flex;gap:10px">
+          <div class="slot"></div>
+          <div class="slot"></div>
+          <div class="slot"></div>
+          <div class="slot"></div>
+          <div class="slot"></div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px"><strong style="background:#2a2f33;padding:4px 8px;border-radius:6px">MAIN</strong><span style="color:var(--muted)">Inventory Slots</span></div>
+        <div class="big-slot" id="inventory">
+          <div style="display:flex;gap:12px">
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <div class="slot small"></div>
+              <div class="slot small"></div>
+              <div class="slot small"></div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <div class="slot small"></div>
+              <div class="slot small"></div>
+              <div class="slot small"></div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <div class="slot small"></div>
+              <div class="slot small"></div>
+              <div class="slot small"></div>
+            </div>
+            <div style="flex:1"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px"><strong style="background:#143b24;padding:4px 8px;border-radius:6px">BELT</strong><span style="color:var(--muted)">Hotbar Items</span></div>
+        <div style="display:flex;gap:10px">
+          <div class="slot"></div>
+          <div class="slot"></div>
+          <div class="slot"></div>
+          <div class="slot"></div>
+        </div>
+      </div>
+
+      <div class="panel commands">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><strong style="background:#3a2a6b;padding:4px 8px;border-radius:6px">COMMANDS</strong><span style="color:var(--muted)">Generated Commands</span></div>
+        <textarea id="commands" readonly>Generated commands will appear here...</textarea>
+      </div>
+
+    </div>
+
+    <div class="right">
+      <div class="panel">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+          <div>
+            <label style="color:var(--muted);font-size:12px">ITEMS</label>
+            <div style="font-weight:700">Item Selection</div>
+          </div>
+          <div style="width:180px">
+            <input id="filter" placeholder="Search items..." style="width:100%;padding:8px;border-radius:8px;background:#071018;border:1px solid rgba(255,255,255,0.03);color:#cbd6e8" />
+          </div>
+        </div>
+        <div class="items-list" id="items">
+          <!-- items injected by JS -->
+        </div>
+      </div>
+    </div>
+  </div>
