@@ -133,3 +133,62 @@
       </div>
     </div>
   </div>
+  <script>
+    const ITEMS = [
+      {id:'40he',name:'40mm HE Grenade'},
+      {id:'40smk',name:'40mm Smoke Grenade'},
+      {id:'f1',name:'F1 Grenade'},
+      {id:'flash',name:'Flashbang'},
+      {id:'mol',name:'Molotov Cocktail'},
+      {id:'smoke',name:'Smoke Grenade'},
+      {id:'mgl',name:'Multiple Grenade Launcher'}
+    ];
+
+    const itemsWrap = document.getElementById('items');
+    const filter = document.getElementById('filter');
+    function renderItems(q=''){
+      itemsWrap.innerHTML='';
+      const filtered = ITEMS.filter(i=>i.name.toLowerCase().includes(q.toLowerCase()));
+      filtered.forEach(it=>{
+        const el = document.createElement('div'); el.className='item'; el.draggable=true; el.dataset.id=it.id; el.dataset.name=it.name;
+        el.innerHTML = `<div class="icon">💣</div><div><div style="font-weight:600">${it.name}</div><div style="font-size:12px;color:var(--muted)">weapon • grenade</div></div>`
+        itemsWrap.appendChild(el);
+
+        el.addEventListener('dragstart', e=>{
+          e.dataTransfer.setData('text/plain', JSON.stringify({id:it.id,name:it.name}));
+        });
+
+        el.addEventListener('click', ()=>{ addToFirstSlot(it); });
+      })
+    }
+    renderItems('');
+    filter.addEventListener('input', ()=>renderItems(filter.value));
+
+    // slots accept drops
+    document.querySelectorAll('.slot').forEach(s=>{
+      s.addEventListener('dragover', e=>e.preventDefault());
+      s.addEventListener('drop', e=>{
+        e.preventDefault();
+        try{
+          const data = JSON.parse(e.dataTransfer.getData('text/plain'));
+          s.textContent='';
+          const label = document.createElement('div'); label.style.fontSize='11px'; label.style.color='#cbd6e8'; label.textContent=data.name; s.appendChild(label);
+          updateCommands();
+        }catch(err){ }
+      })
+    });
+
+    function addToFirstSlot(item){
+      const slot = document.querySelector('.slot:empty');
+      if(slot){ slot.textContent=''; slot.appendChild(Object.assign(document.createElement('div'),{textContent:item.name,style:'font-size:11px;color:#cbd6e8'})); updateCommands(); return; }
+      alert('No empty slot available');
+    }
+
+    function updateCommands(){
+      const assigned = [];
+      document.querySelectorAll('.slot').forEach((s,i)=>{
+        if(s.textContent.trim()) assigned.push(s.textContent.trim());
+      });
+      document.getElementById('commands').value = assigned.length? assigned.map((a,idx)=>`slot${idx+1}: ${a}`).join('\n') : 'No items added';
+    }
+          </script>
