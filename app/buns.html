@@ -1,92 +1,271 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Kit Editor — Plain</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kit Builder</title>
+    <description>Just a fun experiment with plain html, css, and js</description>
     <style>
       :root {
-        --bg: #0b0f14;
-        --panel: #0f161a;
+        --bg-color: #000;
+        --accent: #8bdfea;
+        --accent-glow: #8bdfea;
+        --text-color: #fff;
+        --slot-border: 2px dashed rgba(46, 53, 62);
+        --transition: 0.2s;
+        --font-main: 'Orbitron', sans-serif;
+        --font-body: 'Roboto', sans-serif;
+        --slot-size: 90px;
+        --slot-gap: 10px;
+        --sidebar-slot-size: 120px;
+        --card-bg: #10151b;
+        --catalog-bg: rgba(32, 41, 56);
+        --card-border: rgba(36, 41, 48);
         --muted: #98a0ad;
-        --accent: #ff7a18;
-        --card: #0d1417;
-        --slot: #12171b;
-        --border: rgba(255, 255, 255, 0.04);
-        --glass: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
+        --slot-bg: #131a24;
         font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, 'Helvetica Neue', Arial;
       }
 
       * {
-        box-sizing: border-box
+        box-sizing: border-box;
       }
 
       html,
       body {
+        margin: 20px;
         height: 100%;
-        margin: 0;
-        background: var(--bg);
-        color: #dbe4ef
+        background: var(--bg-color);
+        color: #dbe4ef;
       }
 
-      .app {
+      header {
+        background: var(--bg-color);
+        height: 10px;
+        border-bottom: 3px solid var(--card-border);
+      }
+
+      .header-container {
         display: flex;
+        height: 100%;
+        align-items: flex-end;
+      }
+
+      .Tablist {
+        display: flex;
+        width: 100%;
+      }
+
+      .Tablist button {
+        background: var(--bg-color);
+        font-size: 1rem;
+        border: none;
+        outline: none;
+        padding: 14px;
+        font-family: var(--font-main);
+        color: var(--muted);
+        cursor: pointer;
+        transition: background var(--transition), box-shadow var(--transition);
+      }
+
+      .Tablist button.Tabbtn[data-state="active"] {
+        color: var(--accent);
+        border-bottom: 3px solid var(--accent);
+        margin-bottom: -2px;
+      }
+
+      .Tabcontent {
+        display: flex;
+        flex-wrap: wrap;
         gap: 20px;
-        padding: 18px
+        padding: 18px 0;
       }
 
       .main {
         flex: 1;
         display: flex;
         flex-direction: column;
-        gap: 16px
+        gap: 16px;
       }
 
-      .top {
+      .right {
+        max-width: 500px;
+        min-width: 116px;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .right[data-type="items"] {
+        max-width: 1000px;
+      }
+
+      .top-card {
         display: flex;
         gap: 16px;
-        align-items: center
+        align-items: center;
       }
 
-      .tabs {
-        display: flex;
-        gap: 12px
-      }
-
-      .tabs button {
-        background: transparent;
-        border: 0;
-        color: var(--muted);
-        padding: 6px 10px;
-        border-radius: 6px
-      }
-
-      .tabs button.active {
-        background: rgba(255, 255, 255, 0.03);
-        color: #fff
-      }
-
-      .panel {
-        background: var(--panel);
-        border: 1px solid var(--border);
+      .cards {
+        background: var(--card-bg);
+        border: 1px solid var(--card-border);
         padding: 14px;
-        border-radius: 10px
+        border-radius: 10px;
       }
 
       .row {
         display: flex;
-        gap: 12px
+        gap: 12px;
       }
 
-      .field {
-        flex: 1
+      .card-title {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 8px;
+      }
+
+      .card-title span {
+        color: var(--muted);
+      }
+
+      .card-title strong {
+        padding: 4px 8px;
+        border-radius: 6px;
+        text-transform: uppercase;
+      }
+
+      .card-title strong[data-color="orange"] {
+        background: rgba(94, 47, 28);
+        color: rgba(206, 111, 41);
+      }
+
+      .card-title strong[data-color="blue"] {
+        background: rgba(14, 47, 103);
+        color: rgba(102, 145, 216);
+      }
+
+      .card-title strong[data-color="green"] {
+        background: rgba(22, 52, 42);
+        color: rgba(95, 183, 130);
+      }
+
+      .card-title strong[data-color="purple"] {
+        background: rgba(62, 25, 108);
+        color: rgba(144, 120, 216);
+      }
+
+      .card-title strong[data-color="yellow"] {
+        background: rgba(62, 51, 16);
+        color: rgba(219, 174, 63);
+      }
+
+      .card-button-rows {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+      }
+
+      .card-button-rows button {
+        background: rgb(39, 170, 170);
+        border: 0;
+        padding: 10px 12px;
+        border-radius: 8px;
+        color: white;
+        font-weight: 600;
+        cursor: pointer;
+      }
+
+      .card-button-rows button[data-button-type="mute"] {
+        background-color: rgba(54, 65, 82);
+      }
+
+      .card-button-rows button:hover {
+        background: var(--accent-glow);
+        box-shadow: 0 0 10px var(--accent-glow);
+      }
+
+      .card-content {
+        flex: 1;
+      }
+
+      .card-content[data-card-type="filter"] {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .card-grids {
+        display: grid;
+        gap: var(--slot-gap);
+        width: 100%;
+        grid-template-columns: repeat(auto-fill, minmax(var(--slot-size), 1fr));
+      }
+
+      .card-grids[data-grid-type="large"] {
+        grid-template-columns: repeat(8, 1fr);
+      }
+
+      .slot {
+        width: var(--slot-size);
+        height: var(--slot-size);
+        border-radius: 8px;
+        background: var(--slot-bg);
+        border: var(--slot-border);
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+        color: var(--muted);
+        transition: border-color var(--transition), box-shadow var(--transition);
+        font-size: 28px;
+      }
+
+      .slot img.slotted-item {
+        width: 45px;
+        height: 45px;
+        display: block;
+        margin: 0 auto;
+        object-fit: contain;
+        filter: drop-shadow(0 0 4px var(--accent));
+      }
+
+      .slot:hover {
+        border-color: var(--accent-glow);
+        box-shadow: 0 0 10px var(--accent-glow);
+      }
+
+      .slot img.slotted-item {
+        max-width: calc(var(--slot-size) - 10px);
+        max-height: calc(var(--slot-size) - 10px);
+      }
+
+      .qty-input {
+        width: 30px;
+        height: 20px;
+        font-size: 0.7rem;
+        padding: 2px;
+        border: 1px solid #555;
+        border-radius: 3px;
+        background-color: #3A3A3A;
+        color: #FFF;
+        text-align: center;
+        -webkit-appearance: none;
+        -moz-appearance: textfield;
+        margin-top: 2px;
+      }
+
+      .qty-input::-webkit-inner-spin-button,
+      .qty-input::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
       }
 
       label {
         display: block;
         font-size: 12px;
         color: var(--muted);
-        margin-bottom: 6px
+        margin-bottom: 6px;
       }
 
       input,
@@ -94,297 +273,1047 @@
       textarea {
         width: 100%;
         padding: 10px;
+        outline: none;
         border-radius: 8px;
-        background: #071018;
-        border: 1px solid rgba(255, 255, 255, 0.03);
-        color: #cbd6e8
+        background: #111828;
+        border: 3px solid rgba(52, 59, 69, 0.3);
+        color: #cbd6e8;
       }
 
-      .slots {
+      .catalog {
+        height: 20rem;
+        background: var(--catalog-bg);
+        border: 1.5px solid var(--card-border);
+        border-radius: 10px;
+        overflow: hidden;
+      }
+
+      .catalog-header {
+        height: 20%;
+        background-color: rgba(17, 24, 40);
+        padding: 0 10px;
         display: flex;
+        align-items: center;
+      }
+
+      .catalog-button-rows {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 12px;
+        overflow-x: hidden;
+        white-space: nowrap;
+        scrollbar-width: thin;
+        padding-bottom: 6px;
+      }
+
+      .catalog-button-rows::-webkit-scrollbar {
+        height: 0;
+        background: transparent;
+      }
+
+      .catalog-header:hover .catalog-button-rows {
+        overflow-x: auto;
+        padding-bottom: 0;
+      }
+
+      .catalog-header:hover .catalog-button-rows::-webkit-scrollbar {
+        height: 6px;
+      }
+
+      .catalog-button-rows::-webkit-scrollbar-track {
+        background: transparent;
+      }
+
+      .catalog-button-rows::-webkit-scrollbar-thumb {
+        background: rgba(39, 170, 170, 0.1);
+        border-radius: 3px;
+      }
+
+      .catalog-button-rows::-webkit-scrollbar-thumb:hover {
+        background-color: rgba(39, 170, 170, 0.8);
+      }
+
+      .catalog-button-rows button {
+        background: rgba(31, 41, 56);
+        border: 0;
+        padding: 10px 12px;
+        border-radius: 8px;
+        color: white;
+        font-weight: 600;
+        cursor: pointer;
+        flex-shrink: 0;
+      }
+
+      .catalog-button-rows button[data-button-selected="true"] {
+        background: rgb(39, 170, 170);
+      }
+
+      .catalog-items {
+        height: 80%;
+        padding: 10px 10px 0;
+        display: grid;
+        overflow: scroll;
         gap: 10px;
-        flex-wrap: wrap
+        scrollbar-width: thin;
       }
 
-      .slot {
-        width: 64px;
-        height: 64px;
-        border-radius: 8px;
-        background: var(--slot);
-        border: 1px dashed rgba(255, 255, 255, 0.03);
-        display: flex;
-        align-items: center;
+      .catalog-items::-webkit-scrollbar {
+        height: 0;
+        background: transparent;
+      }
+
+      .catalog-items::-webkit-scrollbar-track {
+        background: transparent;
+      }
+
+      .catalog-items::-webkit-scrollbar-thumb {
+        background: rgba(39, 170, 170, 0.1);
+        border-radius: 3px;
+      }
+
+      .catalog-items::-webkit-scrollbar-thumb:hover {
+        background-color: rgba(39, 170, 170, 0.5);
+      }
+
+      .catalog-item-section {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(var(--sidebar-slot-size), 1fr));
+        gap: var(--slot-gap);
+        align-items: start;
         justify-content: center;
-        color: var(--muted);
-        font-size: 28px
-      }
-
-      .slot.small {
-        width: 48px;
-        height: 48px
-      }
-
-      .big-slot {
-        width: 100%;
-        min-height: 120px;
-        border-radius: 8px;
-        padding: 12px;
-        background: linear-gradient(180deg, rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.00));
-        border: 1px solid rgba(255, 255, 255, 0.03)
-      }
-
-      .right {
-        width: 420px
-      }
-
-      .items-search {
-        display: flex;
-        gap: 8px;
-        align-items: center;
-        margin-bottom: 8px
-      }
-
-      .items-list {
-        background: var(--card);
-        padding: 12px;
-        border-radius: 8px;
-        height: 420px;
-        overflow: auto;
-        border: 1px solid var(--border)
       }
 
       .item {
+        width: var(--sidebar-slot-size);
+        min-height: calc(var(--sidebar-slot-size) + 10px);
+        text-align: center;
+        cursor: grab;
+        background: transparent;
+        transition: transform var(--transition), box-shadow var(--transition);
         display: flex;
         gap: 10px;
+        flex-direction: column;
         align-items: center;
-        padding: 8px;
-        border-radius: 6px;
-        cursor: pointer
+        justify-content: flex-start;
+        padding: 10px;
       }
 
       .item:hover {
-        background: rgba(255, 255, 255, 0.02)
+        transform: translateY(-5px);
+        box-shadow: 0 5px 20px var(--accent-neon);
       }
 
-      .item .icon {
-        width: 36px;
-        height: 36px;
-        border-radius: 6px;
-        background: linear-gradient(135deg, #2d3640, #1a2228);
+      .item img {
+        width: 80%;
+        height: auto;
+        max-height: 60px;
+        object-fit: contain;
+      }
+
+      .item .item-name {
+        font-size: 0.8rem;
+        text-align: center;
+        white-space: normal;
+        overflow: visible;
+        width: 90%;
+        word-wrap: break-word;
+      }
+
+      .announcement {
+        border-radius: 12px;
+        box-shadow: 0 0 40px 0 rgb(94 92 154 / 6%);
+        background-color: var(--card-bg);
+        border: 1px solid var(--card-border);
+        padding: 14px;
+      }
+
+      .announcement-header {
+        display: flex;
+        padding: 10px 10px;
+        transition: 0.4s ease;
+      }
+
+      .announcement-header h1 {
+        display: block;
+      }
+
+      .section-content {
+        flex: 1 1;
+      }
+
+      .section-content-row {
+        display: flex !important;
+        flex-direction: row !important;
+        gap: 0.5rem;
+      }
+
+      .kit-block {
+        display: flex;
+        align-items: center;
+        justify-content: space-between !important;
+        width: 100%;
+      }
+
+      .icon-button {
         display: flex;
         align-items: center;
         justify-content: center;
-        color: var(--muted)
+        width: 36px;
+        height: 36px;
+        border-radius: 6px;
+        background: rgba(88, 101, 242, 0.2);
+        border: none;
+        color: #5865F2;
+        cursor: pointer;
+        transition: background-color 0.2s;
       }
 
-      .tags {
-        display: flex;
-        gap: 6px;
-        margin-bottom: 8px
+      .icon-button:hover {
+        background: rgba(88, 101, 242, 0.3);
       }
 
-      .btn {
-        background: var(--accent);
-        border: 0;
-        padding: 8px 12px;
-        border-radius: 8px;
-        color: #0b0f14;
-        font-weight: 600;
-        cursor: pointer
+      .icon-button.delete {
+        background: rgba(220, 53, 69, 0.2);
+        color: #dc3545;
       }
 
-      .mutebtn {
-        background: transparent;
-        border: 1px solid rgba(255, 255, 255, 0.03);
-        color: var(--muted);
-        padding: 8px;
-        border-radius: 8px
+      .icon-button.delete:hover {
+        background: rgba(220, 53, 69, 0.3);
       }
 
-      .commands textarea {
-        width: 100%;
-        height: 110px;
-        background: #071017;
-        border: 1px solid rgba(255, 255, 255, 0.02);
-        color: #9fb4d8;
-        padding: 12px;
-        border-radius: 8px
+      .icon-button.view {
+        background: rgba(40, 167, 69, 0.2);
+        color: #28a745;
       }
 
-      /* responsive */
-      @media(max-width:900px) {
+      .icon-button.view:hover {
+        background: rgba(40, 167, 69, 0.3);
+      }
+
+      .icon-button svg {
+        width: 18px;
+        height: 18px;
+      }
+
+      @media (min-width: 981px) {
+        .remove-item {
+          display: none;
+        }
+      }
+
+      @media (max-width: 980px) {
+
+        html,
+        body {
+          margin: 20px 10px;
+        }
+
+        .Tabcontent {
+          flex-direction: column;
+        }
+
+        .main,
         .right {
-          display: none
+          flex: 1 1 100%;
+          max-width: 100%;
+        }
+
+        .right[data-type="items"] {
+          display: none;
+        }
+
+        .card-grids {
+          display: flex;
+          flex-wrap: wrap;
+          flex-shrink: none;
+          justify-content: space-evenly;
+        }
+
+        .card-button-rows {
+          flex-wrap: wrap;
+          justify-content: center;
+        }
+
+        .card-content[data-card-type="filter"] {
+          flex-direction: unset;
+          flex-wrap: nowrap;
+        }
+
+        .remove-item {
+          position: absolute;
+          top: -5px;
+          right: -5px;
+          background: #ff4444;
+          color: white;
+          font-size: 12px;
+          border: none;
+          border-radius: 50%;
+          width: 20px;
+          height: 20px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          z-index: 10;
+          box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
         }
       }
     </style>
   </head>
   <body>
-    <div class="app">
-      <div class="main">
-        <div class="top">
-          <div class="tabs"><button class="active">Build Kits</button><button>My Kits</button></div>
-          <div style="flex:1"></div>
-          <div style="display:flex;gap:8px;align-items:center"><button class="mutebtn">Clear All</button><button class="btn">Update Kit in Server</button></div>
+    <header>
+      <div class="header-container">
+        <div class="Tabs" defaultValue="buildkits">
+          <div class="Tablist">
+            <button class="Tabbtn" value="buildkits">Build Kits</button>
+            <button class="Tabbtn" value="mykits">My Kits</button>
+          </div>
         </div>
-        <div class="panel row">
-          <div class="field"><label>Kit Name</label><input id="kitname" value="asd12z" /></div>
-          <div style="width:220px"><label>Authorization Level</label><select id="auth">
+      </div>
+    </header>
+    <div id="buildkits" class="Tabcontent">
+      <div class="main">
+        <div class="cards row">
+          <div class="card-content" data-card-type="top-bar">
+            <label>Kit Name</label>
+            <input id="kit-name" placeholder="Enter kit name..." />
+          </div>
+          <div style="width:50%">
+            <label>Authorization Level</label>
+            <select id="auth">
               <option>None</option>
               <option>Admin</option>
-            </select></div>
-        </div>
-        <div class="panel">
-          <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px"><strong style="background:#2a2f33;padding:4px 8px;border-radius:6px">WEAR</strong><span style="color:var(--muted)">Player Equipment</span></div>
-          <div style="display:flex;gap:10px">
-            <div class="slot"></div>
-            <div class="slot"></div>
-            <div class="slot"></div>
-            <div class="slot"></div>
-            <div class="slot"></div>
+            </select>
           </div>
         </div>
-        <div class="panel">
-          <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px"><strong style="background:#2a2f33;padding:4px 8px;border-radius:6px">MAIN</strong><span style="color:var(--muted)">Inventory Slots</span></div>
-          <div class="big-slot" id="inventory">
-            <div style="display:flex;gap:12px">
-              <div style="display:flex;flex-direction:column;gap:10px">
-                <div class="slot small"></div>
-                <div class="slot small"></div>
-                <div class="slot small"></div>
-              </div>
-              <div style="display:flex;flex-direction:column;gap:10px">
-                <div class="slot small"></div>
-                <div class="slot small"></div>
-                <div class="slot small"></div>
-              </div>
-              <div style="display:flex;flex-direction:column;gap:10px">
-                <div class="slot small"></div>
-                <div class="slot small"></div>
-                <div class="slot small"></div>
-              </div>
-              <div style="flex:1"></div>
+        <div class="cards">
+          <div class="card-title">
+            <strong data-color="orange">Wear</strong>
+            <span>Player Equipment</span>
+          </div>
+          <div id="wear" class="card-grids">
+            <div class="slot" data-slot-type="wear" data-slot-index="0"></div>
+            <div class="slot" data-slot-type="wear" data-slot-index="1"></div>
+            <div class="slot" data-slot-type="wear" data-slot-index="2"></div>
+            <div class="slot" data-slot-type="wear" data-slot-index="3"></div>
+            <div class="slot" data-slot-type="wear" data-slot-index="4"></div>
+            <div class="slot" data-slot-type="wear" data-slot-index="5"></div>
+            <div class="slot" data-slot-type="wear" data-slot-index="6"></div>
+          </div>
+        </div>
+        <div class="cards">
+          <div class="card-title">
+            <strong data-color="blue">Main</strong>
+            <span>Inventory Slots</span>
+          </div>
+          <div id="main" class="card-grids" data-grid-type="large">
+            <div class="slot" data-slot-type="main" data-slot-index="0"></div>
+            <div class="slot" data-slot-type="main" data-slot-index="1"></div>
+            <div class="slot" data-slot-type="main" data-slot-index="2"></div>
+            <div class="slot" data-slot-type="main" data-slot-index="3"></div>
+            <div class="slot" data-slot-type="main" data-slot-index="4"></div>
+            <div class="slot" data-slot-type="main" data-slot-index="5"></div>
+            <div class="slot" data-slot-type="main" data-slot-index="6"></div>
+            <div class="slot" data-slot-type="main" data-slot-index="7"></div>
+            <div class="slot" data-slot-type="main" data-slot-index="8"></div>
+            <div class="slot" data-slot-type="main" data-slot-index="9"></div>
+            <div class="slot" data-slot-type="main" data-slot-index="10"></div>
+            <div class="slot" data-slot-type="main" data-slot-index="11"></div>
+            <div class="slot" data-slot-type="main" data-slot-index="12"></div>
+            <div class="slot" data-slot-type="main" data-slot-index="13"></div>
+            <div class="slot" data-slot-type="main" data-slot-index="14"></div>
+            <div class="slot" data-slot-type="main" data-slot-index="15"></div>
+            <div class="slot" data-slot-type="main" data-slot-index="16"></div>
+            <div class="slot" data-slot-type="main" data-slot-index="17"></div>
+            <div class="slot" data-slot-type="main" data-slot-index="18"></div>
+            <div class="slot" data-slot-type="main" data-slot-index="19"></div>
+            <div class="slot" data-slot-type="main" data-slot-index="20"></div>
+            <div class="slot" data-slot-type="main" data-slot-index="21"></div>
+            <div class="slot" data-slot-type="main" data-slot-index="22"></div>
+            <div class="slot" data-slot-type="main" data-slot-index="23"></div>
+          </div>
+        </div>
+        <div class="cards">
+          <div class="card-title">
+            <strong data-color="green">Belt</strong>
+            <span>Hotbar Items</span>
+          </div>
+          <div id="belt" class="card-grids">
+            <div class="slot" data-slot-type="belt" data-slot-index="0"></div>
+            <div class="slot" data-slot-type="belt" data-slot-index="1"></div>
+            <div class="slot" data-slot-type="belt" data-slot-index="2"></div>
+            <div class="slot" data-slot-type="belt" data-slot-index="3"></div>
+            <div class="slot" data-slot-type="belt" data-slot-index="4"></div>
+            <div class="slot" data-slot-type="belt" data-slot-index="5"></div>
+          </div>
+        </div>
+        <div class="cards">
+          <div class="card-title" style="justify-content:space-between;">
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <strong data-color="purple">Commands</strong>
+              <span>Generated Commands</span>
+            </div>
+            <span id="item-counter" data-default-display="ⓘ No items added" style="font-size:0.75rem;">ⓘ No items added</span>
+          </div>
+          <div class="card-content" style="display:flex;flex-direction:column;gap: 10px;">
+            <textarea id="kit-output" placeholder="Generated commands will appear here..." style="resize: vertical; height: 120px; min-height: 120px;" readonly></textarea>
+            <div class="card-button-rows">
+              <button id="copy-commands">COPY COMMANDS</button>
+              <button id="copy-install-code">COPY INSTALL CODE (BASE64)</button>
+              <button id="clear-all" data-button-type="mute">CLEAR ALL</button>
             </div>
           </div>
         </div>
-        <div class="panel">
-          <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px"><strong style="background:#143b24;padding:4px 8px;border-radius:6px">BELT</strong><span style="color:var(--muted)">Hotbar Items</span></div>
-          <div style="display:flex;gap:10px">
-            <div class="slot"></div>
-            <div class="slot"></div>
-            <div class="slot"></div>
-            <div class="slot"></div>
+      </div>
+      <div class="right" data-type="items">
+        <div class="cards">
+          <div class="card-title">
+            <strong data-color="yellow">Items</strong>
+            <span>Item Selection</span>
+          </div>
+          <div class="card-content" data-card-type="filter">
+            <select id="category">
+              <option value="ALL">All Categories</option>
+            </select>
+            <input id="item-search" placeholder="Search items..." />
           </div>
         </div>
-        <div class="panel commands">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><strong style="background:#3a2a6b;padding:4px 8px;border-radius:6px">COMMANDS</strong><span style="color:var(--muted)">Generated Commands</span></div><textarea id="commands" readonly>Generated commands will appear here...</textarea>
-        </div>
-      </div>
-      <div class="right">
-        <div class="panel">
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
-            <div><label style="color:var(--muted);font-size:12px">ITEMS</label>
-              <div style="font-weight:700">Item Selection</div>
+        <div class="catalog">
+          <div class="catalog-header">
+            <div id="catalog-buttons" class="catalog-button-rows" data-default-selected="ALL">
+              <button id="ALL" data-button-selected="true" data-button-value="ALL">All Items</button>
             </div>
-            <div style="width:180px"><input id="filter" placeholder="Search items..." style="width:100%;padding:8px;border-radius:8px;background:#071018;border:1px solid rgba(255,255,255,0.03);color:#cbd6e8" /></div>
           </div>
-          <div class="items-list" id="items">
-            <!-- items injected by JS -->
+          <div id="items" class="catalog-items">
+            <section class="catalog-item-section">
+              <div class="item" draggable="true" data-item-id="ammo.shotgun.fire" data-item-name="PLACEHOLDER">
+                <img src="https://kb.veretech.systems/images/placeholder.png" alt="PLACEHOLDER">
+                <span class="item-name">PLACEHOLDER</span>
+              </div>
+            </section>
           </div>
         </div>
       </div>
-    </div><script>
-      const ITEMS = [{
-        id: '40he',
-        name: '40mm HE Grenade'
-      }, {
-        id: '40smk',
-        name: '40mm Smoke Grenade'
-      }, {
-        id: 'f1',
-        name: 'F1 Grenade'
-      }, {
-        id: 'flash',
-        name: 'Flashbang'
-      }, {
-        id: 'mol',
-        name: 'Molotov Cocktail'
-      }, {
-        id: 'smoke',
-        name: 'Smoke Grenade'
-      }, {
-        id: 'mgl',
-        name: 'Multiple Grenade Launcher'
-      }];
-      const itemsWrap = document.getElementById('items');
-      const filter = document.getElementById('filter');
+    </div>
+    <div id="mykits" class="Tabcontent">
+      <div class="main">
+        <div class="top-card">
+          <div style="flex:1;"></div>
+          <div class="card-button-rows">
+            <button id="import-kit" data-button-type="mute">Import Kit</button>
+          </div>
+        </div>
+        <div class="announcement">
+          <div class="announcement-header section-content">
+            <div class="kit-block">
+              <div class="section-content">
+                <h1>Your Kit</h1>
+              </div>
+              <div class="section-content-row">
+                <button id="edit-kit" class="icon-button edit">
+                  <svg aria-hidden="true" focusable="false" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                    <path fill="currentColor" d="M471.6 21.7c-21.9-21.9-57.3-21.9-79.2 0L362.3 51.7l97.9 97.9 30.1-30.1c21.9-21.9 21.9-57.3 0-79.2L471.6 21.7zm-299.2 220c-6.1 6.1-10.8 13.6-13.5 21.9l-29.6 88.8c-2.9 8.6-.6 18.1 5.8 24.6s15.9 8.7 24.6 5.8l88.8-29.6c8.2-2.7 15.7-7.4 21.9-13.5L437.7 172.3 339.7 74.3 172.4 241.7zM96 64C43 64 0 107 0 160V416c0 53 43 96 96 96H352c53 0 96-43 96-96V320c0-17.7-14.3-32-32-32s-32 14.3-32 32v96c0 17.7-14.3 32-32 32H96c-17.7 0-32-14.3-32-32V160c0-17.7 14.3-32 32-32h96c17.7 0 32-14.3 32-32s-14.3-32-32-32H96z" />
+                  </svg>
+                </button>
+                <button id="view-kit" class="icon-button view">
+                  <svg aria-hidden="true" focusable="false" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
+                    <path fill="currentColor" d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM144 256a144 144 0 1 1 288 0 144 144 0 1 1 -288 0zm144-64c0 35.3-28.7 64-64 64c-7.1 0-13.9-1.2-20.3-3.3c-5.5-1.8-11.9 1.6-11.7 7.4c.3 6.9 1.3 13.8 3.2 20.7c13.7 51.2 66.4 81.6 117.6 67.9s81.6-66.4 67.9-117.6c-11.1-41.5-47.8-69.4-88.6-71.1c-5.8-.2-9.2 6.1-7.4 11.7c2.1 6.4 3.3 13.2 3.3 20.3z" />
+                  </svg>
+                </button>
+                <button id="delete-kit" class="icon-button delete">
+                  <svg aria-hidden="true" focusable="false" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                    <path fill="currentColor" d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="right" data-type="kits">
+        <div class="cards">
+          <div class="card-title">
+            <strong data-color="yellow">Kits</strong>
+            <span>Kit Storage</span>
+          </div>
+          <div class="card-content" data-card-type="filter">
+            <input id="kit-search" placeholder="Search kits..." />
+            <select id="sort-type">
+              <option value="ALL">All Kits</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      class Tabs {
+        constructor() {
+          this.tabContent = document.getElementsByClassName('Tabcontent');
+          this.tabBtn = document.getElementsByClassName('Tabbtn');
+          this.defaultValue = document.getElementsByClassName('Tabs')[0].getAttribute('defaultValue');
+          this.addEventListeners();
+          for (let i = 0; i < this.tabContent.length; i++) {
+            this.tabContent[i].style.display = 'none';
+          }
+          this.showTab(this.defaultValue)
+        }
+        showTab(value) {
+          for (let i = 0; i < this.tabContent.length; i++) {
+            this.tabContent[i].style.display = 'none';
+          }
+          for (let i = 0; i < this.tabBtn.length; i++) {
+            this.tabBtn[i].dataset.state = 'inactive';
+          }
+          const selectedTab = document.getElementById(value);
+          if (selectedTab) {
+            selectedTab.style.display = 'flex';
+          }
+          const activeBtn = Array.from(this.tabBtn).find(btn => btn.value === value);
+          if (activeBtn) {
+            activeBtn.dataset.state = 'active';
+          }
+        }
+        addEventListeners() {
+          for (let i = 0; i < this.tabBtn.length; i++) {
+            this.tabBtn[i].addEventListener('click', (e) => {
+              const tabValue = e.target.value;
+              this.showTab(tabValue);
+            });
+          }
+        }
+      }
+      const extras = ["scarecrow.suit", "attire.bunny.onesie", "attire.bunnyears", "halloween.mummysuit", "scarecrowhead", "gingerbreadsuit"];
+      const fullSuits = ["hazmatsuit", "scarecrow.suit", "attire.bunny.onesie", "halloween.mummysuit", "gingerbreadsuit"];
+      const conflictingArmorGroups = [
+        ["metal.facemask", "coffeecan.helmet", "deer.skull.mask", "bucket.helmet", "hat.candle", "diving.mask", "heavy.plate.helmet", "riot.helmet", "wood.armor.helmet", "hat.wolf", "scarecrowhead"],
+        ["heavy.plate.jacket", "metal.plate.torso", "roadsign.jacket", "jacket.snow", "wood.armor.jacket", "jacket"],
+        ["shoes.boots", "burlap.shoes", "diving.fins", "boots.frog", "attire.hide.boots"],
+        ["heavy.plate.pants", "roadsign.kilt", "wood.armor.pants"]
+      ];
+      const subCategories = ["Christmas", "Shells", "Bullets", "Arrows", "Rocket", "Head", "Armour", "Horse", "Hands and feet", "Easter", "Torso", "Legs", "Special", "Doors", "Barricades/High Walls", "Walls/Floors", "Windows", "Logic Gates", "Powered Items", "Electric I/O", "Wireless", "Fluid I/O", "Automation", "Power Sources", "Teas", "Fish", "Other", "Crops", "Clones", "Seeds", "Meat", "Halloween", "Medical", "PC", "Survival", "Hybrid", "Water Container", "Building and Systems", "Woodcutting", "Comfort", "Crafting", "Storage", "Traps", "Lighting", "Mining", "Water", "Explosives", "Basic", "Components", "Recycling", "Weapon Attachments", "Rifles and Machine Guns", "Thrown", "Melee", "SMGs", "Shotguns", "Pistols", "Others"];
+      let wearLocked = false;
+      let selectedItemData = null;
+      let itemsData = {};
+      async function loadItemsData() {
+        try {
+          const response = await fetch('https://cors-anywhere.herokuapp.com/https://kb.veretech.systems/Items_organized.json', {
+            headers: {
+              'X-Requested-With': 'XMLHttpRequest'
+            }
+          });
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status} ${response.statusText}`);
+          }
+          itemsData = await response.json();
+          console.log('Items data loaded:', Object.keys(itemsData));
+        } catch (error) {
+          console.error('Error loading items data:', error);
+          itemsData = {};
+        }
+      }
+      document.addEventListener('DOMContentLoaded', function() {
+        new Tabs();
+        const kitsTab = document.getElementById('mykits');
+        const right = document.getElementsByClassName('right');
 
-      function renderItems(q = '') {
-        itemsWrap.innerHTML = '';
-        const filtered = ITEMS.filter(i => i.name.toLowerCase().includes(q.toLowerCase()));
-        filtered.forEach(it => {
-          const el = document.createElement('div');
-          el.className = 'item';
-          el.draggable = true;
-          el.dataset.id = it.id;
-          el.dataset.name = it.name;
-          el.innerHTML = `
-          <div class="icon">💣</div>
-          <div>
-            <div style="font-weight:600">${it.name}</div>
-            <div style="font-size:12px;color:var(--muted)">weapon • grenade</div>
-          </div>`
-          itemsWrap.appendChild(el);
-          el.addEventListener('dragstart', e => {
-            e.dataTransfer.setData('text/plain', JSON.stringify({
-              id: it.id,
-              name: it.name
+        function moveTo(pos) {
+          const kits = Array.from(right).find(div => div.dataset.type === 'kits');
+          if (!kits) {
+            console.log('kits tab not found');
+            return;
+          }
+          try {
+            if (kits && kits != kitsTab.firstChild && pos === 'top') {
+              kitsTab.insertBefore(kits, kitsTab.firstChild);
+              return;
+            } else if (kits && kits === kitsTab.firstChild && pos === 'bottom') {
+              kitsTab.insertBefore(kits, null);
+              return;
+            }
+          } catch (error) {
+            console.log('Error moving', error);
+          }
+        }
+        if (window.innerWidth <= 980) {
+          moveTo('top');
+        }
+        window.addEventListener('resize', function() {
+          if (window.innerWidth <= 980) {
+            moveTo('top');
+          } else {
+            moveTo('bottom');
+          }
+        });
+      });
+      document.addEventListener('DOMContentLoaded', async () => {
+        await loadItemsData();
+        window.items = itemsData;
+
+        function updateWearLockStatus() {
+          const wearSlots = document.querySelectorAll('.slot[data-slot-type="wear"]');
+          let stillLocked = false;
+          wearSlots.forEach(ws => {
+            if (ws.dataset.itemId && lockWearItems.some(item => item.toLowerCase() === ws.dataset.itemId.toLowerCase())) {
+              stillLocked = true;
+            }
+          });
+          wearLocked = stillLocked;
+        }
+        const itemList = document.getElementById("items");
+        const catalogBtnRow = document.getElementById("catalog-buttons");
+        const searchItems = document.getElementById("item-search");
+        const searchKits = document.getElementById("kit-search");
+        const categorySelect = document.getElementById("category");
+        const kitInput = document.getElementById("kit-name");
+        const output = document.getElementById("kit-output");
+        const copyCommands = document.getElementById("copy-commands");
+        const copyInstallCode = document.getElementById("copy-install-code");
+        const clearAll = document.getElementById("clear-all");
+        const categories = itemsData && typeof itemsData === 'object' ? Object.keys(itemsData) : [];
+        categorySelect.innerHTML = "";
+        const allOption = document.createElement("option");
+        allOption.value = "ALL";
+        allOption.textContent = "All Categories";
+        categorySelect.appendChild(allOption);
+        categories.forEach(cat => {
+          const option = document.createElement("option");
+          option.value = cat;
+          option.textContent = cat;
+          categorySelect.appendChild(option);
+        });
+        let currentCategory = "ALL";
+        let currentSearch = "";
+        let currentSubcategory = "ALL";
+
+        function buildImageUrl(imagePath) {
+          if (!imagePath) return "https://kb.veretech.systems/images/placeholder.png";
+          let cleanPath = imagePath.replace(/^\.\//, '');
+          return `https://kb.veretech.systems/${cleanPath}.png`;
+        }
+
+        function sanitizeItems(item) {
+          return item.toLowerCase().replace(/[\s]/g, '_').replace(/[\/]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
+        }
+
+        function updateCatalog() {
+          itemList.classList.add("fade-out");
+          setTimeout(() => {
+            itemList.innerHTML = "";
+            catalogBtnRow.innerHTML = "";
+            let categoriesToProcess = [];
+            if (currentCategory === "ALL") {
+              categoriesToProcess = categories;
+            } else {
+              categoriesToProcess = [currentCategory];
+            }
+            const allBtn = document.createElement("button");
+            allBtn.id = "ALL";
+            allBtn.dataset.buttonSelected = currentSubcategory === 'ALL' ? true : false;
+            allBtn.dataset.buttonValue = "ALL";
+            allBtn.textContent = "All Items";
+            catalogBtnRow.appendChild(allBtn);
+            allBtn.addEventListener('click', (e) => {
+              e.stopPropagation;
+              currentSubcategory = e.target.dataset.buttonValue;
+              document.querySelectorAll('button[data-button-selected="true"]').forEach(elem => {
+                elem.dataset.buttonSelected = "false";
+              });
+              e.target.dataset.buttonSelected = "true";
+              updateCatalog()
+            });
+            const visibleSubcategories = new Set();
+            const term = currentSearch.toLowerCase();
+            categoriesToProcess.forEach(categoryName => {
+              const categoryData = itemsData[categoryName];
+              if (!categoryData || typeof categoryData !== 'object') return;
+              Object.keys(categoryData).forEach(subcategoryName => {
+                if (subcategoryName === "PC") return;
+                const subcategoryItems = categoryData[subcategoryName];
+                if (!Array.isArray(subcategoryItems)) return;
+                const filteredItems = subcategoryItems.filter(item => item.name.toLowerCase().includes(term) || item.id.toLowerCase().includes(term));
+                if (filteredItems.length > 0) {
+                  visibleSubcategories.add(subcategoryName);
+                }
+              });
+            });
+            Array.from(visibleSubcategories).sort().forEach(subcategoryName => {
+              const subCatBtn = document.createElement("button");
+              subCatBtn.id = sanitizeItems(subcategoryName);
+              subCatBtn.dataset.buttonSelected = currentSubcategory === subcategoryName ? "true" : "false";
+              subCatBtn.dataset.buttonValue = subcategoryName;
+              subCatBtn.textContent = subcategoryName;
+              catalogBtnRow.appendChild(subCatBtn);
+              subCatBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                currentSubcategory = e.target.dataset.buttonValue;
+                document.querySelectorAll('button[data-button-selected="true"]').forEach(elem => {
+                  elem.dataset.buttonSelected = "false";
+                });
+                e.target.dataset.buttonSelected = "true";
+                updateCatalog();
+              });
+            });
+            if (currentSubcategory !== "ALL" && !visibleSubcategories.has(currentSubcategory)) {
+              currentSubcategory = "ALL";
+              document.querySelector('button[data-button-value="ALL"]').dataset.buttonSelected = "true";
+            }
+            categoriesToProcess.forEach(categoryName => {
+              const categoryData = itemsData[categoryName];
+              if (!categoryData || typeof categoryData !== 'object') return;
+              Object.keys(categoryData).forEach(subcategoryName => {
+                if (subcategoryName === "PC") return;
+                if (currentSubcategory !== 'ALL' && subcategoryName !== currentSubcategory) {
+                  return;
+                }
+                const subcategoryItems = categoryData[subcategoryName];
+                if (!Array.isArray(subcategoryItems)) return;
+                const filteredItems = subcategoryItems.filter(item => item.name.toLowerCase().includes(term) || item.id.toLowerCase().includes(term));
+                if (filteredItems.length === 0) return;
+                const catalogSection = document.createElement("section");
+                catalogSection.classList.add("catalog-item-section");
+                catalogSection.dataset.catalogSubcategory = subcategoryName;
+                catalogSection.dataset.catalogSectionSelected = true;
+                itemList.appendChild(catalogSection);
+                /*
+                if (currentCategory === "ALL" || (categoryData && Object.keys(categoryData).length > 1)) {
+                  const Btn = document.getElementById(sanitizeItems(subcategoryName));
+                  if (!Btn) {
+                    const catalogBtn = document.createElement("button");
+                    catalogBtn.id = sanitizeItems(subcategoryName);
+                    catalogBtn.dataset.catalogSubcategory = subcategoryName;
+                    catalogBtn.textContent = currentCategory === "ALL" ?
+                      `${subcategoryName}` :
+                      subcategoryName;
+                    catalogBtnRow.appendChild(subcategoryHeader);
+                  }
+                }*/
+                // Create items for this subcategory
+                filteredItems.forEach(item => {
+                  const itemDiv = document.createElement("div");
+                  itemDiv.classList.add("item");
+                  itemDiv.draggable = true;
+                  itemDiv.dataset.itemId = item.id;
+                  itemDiv.dataset.itemName = item.name;
+                  const img = document.createElement("img");
+                  img.src = buildImageUrl(item.image);
+                  img.alt = item.name;
+                  img.onerror = () => {
+                    img.src = "https://kb.veretech.systems/images/placeholder.png";
+                  };
+                  itemDiv.appendChild(img);
+                  const nameSpan = document.createElement("span");
+                  nameSpan.classList.add("item-name");
+                  nameSpan.textContent = item.name;
+                  itemDiv.appendChild(nameSpan);
+                  if (selectedItemData && selectedItemData.id === item.id) {
+                    itemDiv.classList.add("selected");
+                  }
+                  itemDiv.addEventListener("dragstart", (ev) => {
+                    ev.dataTransfer.setData("text/plain", JSON.stringify({
+                      id: item.id,
+                      name: item.name
+                    }));
+                  });
+                  itemDiv.addEventListener("click", () => {
+                    document.querySelectorAll(".item.selected").forEach(elem => {
+                      elem.classList.remove("selected");
+                    });
+                    selectedItemData = {
+                      id: item.id,
+                      name: item.name
+                    };
+                    itemDiv.classList.add("selected");
+                  });
+                  catalogSection.appendChild(itemDiv);
+                });
+              });
+            });
+            itemList.classList.remove("fade-out");
+            itemList.classList.add("fade-in");
+            setTimeout(() => {
+              itemList.classList.remove("fade-in");
+            }, 300);
+          }, 300);
+        }
+        categorySelect.addEventListener("change", (e) => {
+          currentCategory = e.target.value;
+          updateCatalog();
+        });
+        searchItems.addEventListener("input", (e) => {
+          currentSearch = e.target.value;
+          updateCatalog();
+        });
+        updateCatalog();
+
+        function handleItemDrop(slot, data) {
+          // If this is a drag from another slot, we need to handle it differently
+          if (data.slotType !== undefined && data.slotIndex !== undefined) {
+            // Clear the source slot
+            const sourceSlot = document.querySelector(`.slot[data-slot-type="${data.slotType}"][data-slot-index="${data.slotIndex}"]`);
+            let currentQuantity = 1;
+            if (sourceSlot) {
+              const qtyInput = sourceSlot.querySelector('.qty-input');
+              currentQuantity = qtyInput ? parseInt(qtyInput.value) : 1;
+              sourceSlot.innerHTML = "";
+              delete sourceSlot.dataset.itemId;
+              delete sourceSlot.dataset.itemName;
+              updateWearLockStatus();
+            }
+            // Update the target slot with the dragged item
+            const itemData = {
+              id: data.itemId,
+              name: data.itemName,
+              quantity: currentQuantity
+            };
+            handleItemDrop(slot, itemData);
+            return;
+          }
+          if (slot.dataset.slotType === "wear") {
+            if (data.id.toLowerCase().includes("backpack")) {
+              Toast.error("Backpacks cannot go in the wear bar!");
+              return;
+            }
+            if (fullSuits.some(item => item.toLowerCase() === data.id.toLowerCase())) {
+              document.querySelectorAll('.slot[data-slot-type="wear"]').forEach(ws => {
+                ws.innerHTML = "";
+                delete ws.dataset.itemId;
+                delete ws.dataset.itemName;
+              });
+              wearLocked = true;
+            } else {
+              if (wearLocked) {
+                Toast.error("Wear bar is locked by a full suit.");
+                return;
+              }
+              // Check if item is in ATTIRE category by searching through all subcategories (excluding Horse items)
+              let isAttire = false;
+              if (window.items && window.items["ATTIRE"]) {
+                for (const subcat in window.items["ATTIRE"]) {
+                  // Skip Horse subcategory as horse items cannot be worn by players
+                  if (subcat === "Horse") continue;
+                  if (Array.isArray(window.items["ATTIRE"][subcat])) {
+                    const found = window.items["ATTIRE"][subcat].find(i => i.id.toLowerCase() === data.id.toLowerCase());
+                    if (found) {
+                      isAttire = true;
+                      break;
+                    }
+                  }
+                }
+              }
+              const isExtraWearable = extras.some(item => item.toLowerCase() === data.id.toLowerCase());
+              if (!isAttire && !isExtraWearable) {
+                Toast.error(`"${data.name}" cannot be placed in wear slots. Only Attire or special wearable items are allowed.`);
+                return;
+              }
+              for (const group of conflictingArmorGroups) {
+                if (group.some(item => item.toLowerCase() === data.id.toLowerCase())) {
+                  for (const item of group) {
+                    const itemSlot = document.querySelector(`.slot[data-slot-type="wear"][data-itemId]`);
+                    if (itemSlot && itemSlot.dataset.itemId.toLowerCase() === item.toLowerCase()) {
+                      Toast.error(`Cannot wear ${data.id} with ${item}`);
+                      return;
+                    }
+                  }
+                }
+              }
+            }
+          }
+          slot.innerHTML = "";
+          slot.style.position = "relative";
+          const slotItem = document.createElement("div");
+          slotItem.classList.add("slot-item");
+          slotItem.draggable = true; // Make the slot item draggable
+          const slotImg = document.createElement("img");
+          slotImg.classList.add("slotted-item");
+          slotImg.alt = data.name;
+          /*const fullImagePath = findItemImagePath(data.id);
+          if (fullImagePath) {
+              slotImg.src = fullImagePath + ".png";
+              slotImg.onerror = () => {
+                  slotImg.src = "https://kb.veretech.systems/images/placeholder.png";
+              };
+          }*/
+          slotImg.src = buildImageUrl(findItemImagePath(data.id));
+          slotImg.onerror = () => {
+            slotImg.src = "https://kb.veretech.systems/images/placeholder.png";
+          };
+          slotItem.appendChild(slotImg);
+          const qtyInput = document.createElement("input");
+          qtyInput.type = "number";
+          qtyInput.classList.add("qty-input");
+          qtyInput.value = data.quantity || 1;
+          qtyInput.min = 1;
+          qtyInput.addEventListener("click", (e) => {
+            e.stopPropagation();
+          });
+          if (slot.dataset.slotType === "wear") {
+            qtyInput.disabled = true;
+          } else {
+            qtyInput.addEventListener("change", () => {
+              output.value = generateCommands();
+            });
+          }
+          slotItem.appendChild(qtyInput);
+          slot.appendChild(slotItem);
+          // Add dragstart event to the slot item
+          slotItem.addEventListener("dragstart", (ev) => {
+            ev.dataTransfer.setData("text/plain", JSON.stringify({
+              itemId: slot.dataset.itemId,
+              itemName: slot.dataset.itemName,
+              slotType: slot.dataset.slotType,
+              slotIndex: slot.dataset.slotIndex
             }));
           });
-          el.addEventListener('click', () => {
-            addToFirstSlot(it);
+          const removeBtn = document.createElement("button");
+          removeBtn.classList.add("remove-item");
+          removeBtn.textContent = "x";
+          removeBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            slot.innerHTML = "";
+            delete slot.dataset.itemId;
+            delete slot.dataset.itemName;
+            updateWearLockStatus();
+            output.value = generateCommands();
           });
-        })
-      }
-      renderItems('');
-      filter.addEventListener('input', () => renderItems(filter.value));
-      // slots accept drops
-      document.querySelectorAll('.slot').forEach(s => {
-        s.addEventListener('dragover', e => e.preventDefault());
-        s.addEventListener('drop', e => {
-          e.preventDefault();
-          try {
-            const data = JSON.parse(e.dataTransfer.getData('text/plain'));
-            s.textContent = '';
-            const label = document.createElement('div');
-            label.style.fontSize = '11px';
-            label.style.color = '#cbd6e8';
-            label.textContent = data.name;
-            s.appendChild(label);
-            updateCommands();
-          } catch (err) {}
-        })
-      });
-
-      function addToFirstSlot(item) {
-        const slot = document.querySelector('.slot:empty');
-        if (slot) {
-          slot.textContent = '';
-          slot.appendChild(Object.assign(document.createElement('div'), {
-            textContent: item.name,
-            style: 'font-size:11px;color:#cbd6e8'
-          }));
-          updateCommands();
-          return;
+          slot.appendChild(removeBtn);
+          slotItem.addEventListener("dragend", (ev) => {
+            if (ev.dataTransfer.dropEffect === "none") {
+              slot.innerHTML = "";
+              delete slot.dataset.itemId;
+              delete slot.dataset.itemName;
+              updateWearLockStatus();
+              output.value = generateCommands();
+            }
+          });
+          slot.dataset.itemId = data.id;
+          slot.dataset.itemName = data.name;
+          output.value = generateCommands();
         }
-        alert('No empty slot available');
-      }
-
-      function updateCommands() {
-        const assigned = [];
-        document.querySelectorAll('.slot').forEach((s, i) => {
-          if (s.textContent.trim()) assigned.push(s.textContent.trim());
+        const slots = document.querySelectorAll(".slot");
+        slots.forEach(slot => {
+          slot.addEventListener("dragover", (e) => {
+            e.preventDefault();
+            // Add visual feedback for valid drop targets
+            const slotItem = slot.querySelector(".slot-item");
+            if (!slotItem) {
+              slot.style.borderColor = "var(--accent-neon)";
+              slot.style.boxShadow = "0 0 10px var(--accent-neon)";
+            }
+          });
+          slot.addEventListener("dragleave", (e) => {
+            e.preventDefault();
+            // Remove visual feedback when leaving drop target
+            const slotItem = slot.querySelector(".slot-item");
+            if (!slotItem) {
+              slot.style.borderColor = "";
+              slot.style.boxShadow = "";
+            }
+          });
+          slot.addEventListener("drop", (e) => {
+            e.preventDefault();
+            // Remove visual feedback after drop
+            slot.style.borderColor = "";
+            slot.style.boxShadow = "";
+            let data;
+            try {
+              data = JSON.parse(e.dataTransfer.getData("text/plain"));
+            } catch (err) {
+              return;
+            }
+            handleItemDrop(slot, data);
+          });
         });
-        document.getElementById('commands').value = assigned.length ? assigned.map((a, idx) => `slot${idx+1}: ${a}`).join('\n') : 'No items added';
-      }
+
+        function handleSlotPlacement(slot) {
+          if (!selectedItemData) {
+            return; // No item selected, do nothing
+          }
+          const data = {
+            id: selectedItemData.id,
+            name: selectedItemData.name
+          };
+          handleItemDrop(slot, data);
+          selectedItemData = null;
+          document.querySelectorAll(".item.selected").forEach(elem => {
+            elem.classList.remove("selected");
+          });
+        }
+        slots.forEach(slot => {
+          slot.addEventListener("click", () => handleSlotPlacement(slot));
+        });
+
+        function findItemImagePath(itemId) {
+          if (!window.items) return null;
+          for (let cat of categories) {
+            if (window.items[cat]) {
+              // Handle nested structure where categories contain subcategories
+              if (Array.isArray(window.items[cat])) {
+                const found = window.items[cat].find(i => i.id.toLowerCase() === itemId.toLowerCase());
+                if (found) return found.image;
+              } else {
+                // Handle subcategories
+                for (const subcat in window.items[cat]) {
+                  if (Array.isArray(window.items[cat][subcat])) {
+                    const found = window.items[cat][subcat].find(i => i.id.toLowerCase() === itemId.toLowerCase());
+                    if (found) return found.image;
+                  }
+                }
+              }
+            }
+          }
+          return null;
+        }
+
+        function generateCommands() {
+          const kitName = kitInput.value.trim() || "MyKit";
+          const allSlots = document.querySelectorAll(".slot");
+          let commands = [];
+          allSlots.forEach(slot => {
+            const itemId = slot.dataset.itemId;
+            if (itemId) {
+              let container = "main";
+              if (slot.dataset.slotType === "wear") container = "wear";
+              else if (slot.dataset.slotType === "belt") container = "belt";
+              let qty = 1;
+              const qtyInput = slot.querySelector(".qty-input");
+              if (qtyInput && slot.dataset.slotType !== "wear") {
+                qty = parseInt(qtyInput.value, 10) || 1;
+              }
+              commands.push(`kit add "${kitName}" "${itemId}" ${qty} 1 ${container}`);
+            }
+          });
+          const counter = document.getElementById("item-counter");
+          counter.textContent = commands.length > 0 ? `ⓘ ${commands.length} items` : counter.dataset.defaultDisplay;
+          return commands.join("\n");
+        }
+        clearAll.addEventListener("click", () => {
+          slots.forEach(slot => {
+            slot.innerHTML = "";
+            delete slot.dataset.itemId;
+            delete slot.dataset.itemName;
+          });
+          wearLocked = false;
+          output.value = "";
+          kitInput.value = "";
+        });
+        copyCommands.addEventListener("click", () => {
+          const commands = generateCommands();
+          output.value = commands;
+          output.select();
+          document.execCommand("copy");
+          Toast.success("Commands copied to clipboard!");
+        });
+        copyInstallCode.addEventListener("click", () => {
+          const commands = generateCommands();
+          const base64 = btoa(commands);
+          output.value = base64;
+          output.select();
+          document.execCommand("copy");
+          Toast.success("Base64 Install Code copied to clipboard!");
+        });
+      });
     </script>
+  </body>
+</html>
